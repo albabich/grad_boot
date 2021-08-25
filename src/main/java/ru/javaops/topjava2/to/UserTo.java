@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 import ru.javaops.topjava2.HasIdAndEmail;
+import ru.javaops.topjava2.util.validation.NoHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ public class UserTo extends NamedTo implements HasIdAndEmail, Serializable {
     @Email
     @NotBlank
     @Size(max = 100)
+    @NoHtml  // https://stackoverflow.com/questions/17480809
     String email;
 
     @NotBlank
