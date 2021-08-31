@@ -59,10 +59,10 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + USER_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + USER2_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertFalse(userRepository.findById(USER_ID).isPresent());
+        assertFalse(userRepository.findById(USER2_ID).isPresent());
     }
 
     @Test
@@ -90,7 +90,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER_MAIL)
+    @WithUserDetails(value = USER2_MAIL)
     void getForbidden() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isForbidden());
@@ -101,13 +101,13 @@ class AdminUserControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         User updated = getUpdated();
         updated.setId(null);
-        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + USER2_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updated, "newPass")))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        MATCHER.assertMatch(userRepository.getById(USER_ID), getUpdated());
+        MATCHER.assertMatch(userRepository.getById(USER2_ID), getUpdated());
     }
 
     @Test
@@ -132,19 +132,19 @@ class AdminUserControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MATCHER.contentJson(admin, user));
+                .andExpect(MATCHER.contentJson(admin, user2, user3, user4));
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void enable() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + USER_ID)
+        perform(MockMvcRequestBuilders.patch(REST_URL + USER2_ID)
                 .param("enabled", "false")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertFalse(userRepository.getById(USER_ID).isEnabled());
+        assertFalse(userRepository.getById(USER2_ID).isEnabled());
     }
 
     @Test
@@ -161,9 +161,9 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        User invalid = new User(user);
+        User invalid = new User(user2);
         invalid.setName("");
-        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + USER2_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(invalid, "password")))
                 .andDo(print())
@@ -173,9 +173,9 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateHtmlUnsafe() throws Exception {
-        User updated = new User(user);
+        User updated = new User(user2);
         updated.setName("<script>alert(123)</script>");
-        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + USER2_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updated, "password")))
                 .andDo(print())
@@ -186,9 +186,9 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
     void updateDuplicate() throws Exception {
-        User updated = new User(user);
+        User updated = new User(user2);
         updated.setEmail(ADMIN_MAIL);
-        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + USER2_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updated, "password")))
                 .andDo(print())
@@ -200,7 +200,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
     void createDuplicate() throws Exception {
-        User expected = new User(null, "New", USER_MAIL, "newPass", Role.USER, Role.ADMIN);
+        User expected = new User(null, "New", USER2_MAIL, "newPass", Role.USER, Role.ADMIN);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(expected, "newPass")))

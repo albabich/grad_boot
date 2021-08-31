@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,14 @@ import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.M
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String EXCEPTION_DUPLICATE_EMAIL = "User with this email already exists";
+    public static final String EXCEPTION_DUPLICATE_MENU_ITEM = "[name] MenuItem with this name for this restaurant for today already exists";
+    public static final String EXCEPTION_DUPLICATE_RESTAURANT = "[name] Restaurant with this name already exists";
 
     private final ErrorAttributes errorAttributes;
+
+    private static final Map<String, String> CONSTRAINS_MAP = Map.of(
+            "restaurant_unique_name_idx", EXCEPTION_DUPLICATE_RESTAURANT,
+            "menu_item_unique_restaurant_id_date_name_idx", EXCEPTION_DUPLICATE_MENU_ITEM);
 
     @NonNull
     @Override
@@ -56,6 +63,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> persistException(WebRequest request, EntityNotFoundException ex) {
         log.error("EntityNotFoundException ", ex);
         return createResponseEntity(getDefaultBody(request, ErrorAttributeOptions.of(MESSAGE), null), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> conflict(WebRequest request, DataIntegrityViolationException e) {
+        log.error("DataIntegrityViolationException ", e);
+        String rootMsg = e.getRootCause() != null ? e.getRootCause().getMessage() : null;
+        String errMsg = null;
+        if (rootMsg != null) {
+            String lowerCaseMsg = rootMsg.toLowerCase();
+            for (Map.Entry<String, String> entry : CONSTRAINS_MAP.entrySet()) {
+                if (lowerCaseMsg.contains(entry.getKey())) {
+                    errMsg = entry.getValue();
+                }
+            }
+        }
+        return createResponseEntity(getDefaultBody(request, ErrorAttributeOptions.of(MESSAGE), errMsg), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     private ResponseEntity<Object> handleBindingErrors(BindingResult result, WebRequest request) {

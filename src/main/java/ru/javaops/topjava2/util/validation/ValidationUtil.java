@@ -4,6 +4,9 @@ import lombok.experimental.UtilityClass;
 import ru.javaops.topjava2.HasId;
 import ru.javaops.topjava2.error.IllegalRequestDataException;
 import ru.javaops.topjava2.error.NotFoundException;
+import ru.javaops.topjava2.error.VoteException;
+
+import java.time.LocalTime;
 
 @UtilityClass
 public class ValidationUtil {
@@ -26,6 +29,14 @@ public class ValidationUtil {
     public static void checkModification(int count, int id) {
         if (count == 0) {
             throw new NotFoundException("Entity with id=" + id + " not found");
+        }
+    }
+
+    private static final LocalTime CLOSEVOTING = LocalTime.of(11, 00);
+
+    public static void checkChangeVoteAbility() {
+        if (LocalTime.now().isAfter(CLOSEVOTING)) {
+            throw new VoteException(String.format("You can't change vote after %s", CLOSEVOTING));
         }
     }
 }
