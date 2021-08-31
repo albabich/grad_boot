@@ -10,9 +10,9 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface RestaurantRepository extends BaseRepository<Restaurant> {
-    @Query("SELECT DISTINCT(r) FROM Restaurant r JOIN FETCH  r.menuItems m WHERE m.date=?1")
+    @Query("SELECT DISTINCT(r) FROM Restaurant r JOIN FETCH  r.menuItems m WHERE m.date=:date ORDER BY r.name")
     List<Restaurant> getAllWithMenuItemsByDate(LocalDate date);
 
-    @Query("SELECT DISTINCT(r) FROM Restaurant r JOIN FETCH  r.votes m WHERE m.date=:localDate")
+    @Query("SELECT DISTINCT(r) FROM Restaurant r JOIN FETCH  r.votes m WHERE m.date=:localDate ORDER BY r.name")
     Collection<Restaurant> findAllByVoteDate(LocalDate localDate);
 }
