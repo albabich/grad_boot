@@ -9,16 +9,11 @@ import ru.javaops.topjava2.util.validation.NoHtml;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.io.Serial;
-import java.io.Serializable;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class UserTo extends NamedTo implements HasIdAndEmail, Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class UserTo extends NamedTo implements HasIdAndEmail {
     @Email
     @NotBlank
     @Size(max = 100)
