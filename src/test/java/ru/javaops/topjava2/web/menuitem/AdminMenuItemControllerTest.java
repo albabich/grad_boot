@@ -71,7 +71,7 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        MenuItemTo updatedTo = new MenuItemTo(100007, "salad updated", 280);
+        MenuItemTo updatedTo = new MenuItemTo("salad updated", 280);
         perform(MockMvcRequestBuilders.put(REST_URL + REST1_ID + "/menu-items/" + MENU_ITEM1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updatedTo)))
@@ -85,10 +85,10 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
-        MenuItemTo newMenuItemTo = new MenuItemTo("", 0);
+        MenuItemTo invalid = new MenuItemTo("", 0);
         perform(MockMvcRequestBuilders.post(REST_URL + REST1_ID + "/menu-items/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newMenuItemTo)))
+                .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -96,10 +96,10 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        MenuItemTo updatedTo = new MenuItemTo(100007, "", 280);
+        MenuItemTo invalid = new MenuItemTo("", 280);
         perform(MockMvcRequestBuilders.put(REST_URL + REST1_ID + "/menu-items/" + MENU_ITEM1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -108,24 +108,23 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
-        MenuItemTo newMenuItemTo = new MenuItemTo("salad", 150);
+        MenuItemTo duplicate = new MenuItemTo("salad", 150);
         perform(MockMvcRequestBuilders.post(REST_URL + REST1_ID + "/menu-items/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newMenuItemTo)))
+                .content(JsonUtil.writeValue(duplicate)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(GlobalExceptionHandler.EXCEPTION_DUPLICATE_MENU_ITEM)));
-        ;
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        MenuItemTo updatedTo = new MenuItemTo(100007, "lobio", 280);
+        MenuItemTo duplicate = new MenuItemTo("lobio", 280);
         perform(MockMvcRequestBuilders.put(REST_URL + REST1_ID + "/menu-items/" + MENU_ITEM1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(JsonUtil.writeValue(duplicate)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(GlobalExceptionHandler.EXCEPTION_DUPLICATE_MENU_ITEM)));

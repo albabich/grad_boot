@@ -1,6 +1,5 @@
 package ru.javaops.topjava2.repository;
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.topjava2.error.IllegalRequestDataException;
@@ -8,21 +7,11 @@ import ru.javaops.topjava2.model.MenuItem;
 
 import java.util.Optional;
 
-import static ru.javaops.topjava2.util.validation.ValidationUtil.checkModification;
-
 @Transactional(readOnly = true)
 public interface MenuItemRepository extends BaseRepository<MenuItem> {
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM MenuItem m WHERE m.id=:id AND m.restaurant.id=:restaurantId")
-    int delete(int id, int restaurantId);
 
     @Query("SELECT m FROM MenuItem m WHERE m.id = :id and m.restaurant.id = :restaurantId")
     Optional<MenuItem> get(int id, int restaurantId);
-
-    default void deleteExisted(int id, int parentId) {
-        checkModification(delete(id, parentId), id);
-    }
 
     default MenuItem checkBelong(int id, int restaurantId) {
         return get(id, restaurantId).orElseThrow(

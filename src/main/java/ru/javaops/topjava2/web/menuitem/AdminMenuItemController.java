@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 import static ru.javaops.topjava2.util.MenuItemUtil.updateFromTo;
+import static ru.javaops.topjava2.util.validation.ValidationUtil.assureIdConsistent;
 import static ru.javaops.topjava2.util.validation.ValidationUtil.checkNew;
 
 
@@ -66,6 +67,7 @@ public class AdminMenuItemController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody MenuItemTo menuItemTo, @PathVariable int id, @PathVariable int restaurantId) {
         log.info("update menuItem {} for restaurant {}", id, restaurantId);
+        assureIdConsistent(menuItemTo, id);
         MenuItem menuItem = menuItemRepository.checkBelong(id, restaurantId);
         updateFromTo(menuItem, menuItemTo);
         menuItemRepository.save(menuItem);
@@ -75,7 +77,8 @@ public class AdminMenuItemController {
     @DeleteMapping("/{restaurantId}/menu-items/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id, @PathVariable int restaurantId) {
-        log.info("delete menuItemTo {} for restaurant {}", id, restaurantId);
-        menuItemRepository.deleteExisted(id, restaurantId);
+        log.info("delete menuItem {} for restaurant {}", id, restaurantId);
+        MenuItem menuItem = menuItemRepository.checkBelong(id, restaurantId);
+        menuItemRepository.delete(menuItem);
     }
 }

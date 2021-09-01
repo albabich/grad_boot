@@ -15,7 +15,6 @@ import ru.javaops.topjava2.to.VoteTo;
 import ru.javaops.topjava2.util.JsonUtil;
 import ru.javaops.topjava2.web.AbstractControllerTest;
 
-import static java.time.LocalDate.now;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javaops.topjava2.web.restaurant.RestaurantTestData.*;
@@ -35,7 +34,7 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER2_MAIL)
     void createWithLocation() throws Exception {
         VoteTo newVoteTo = new VoteTo(REST1_ID);
-        Vote newVote = new Vote(null, now(), restaurantRepository.getById(newVoteTo.getRestaurantId()));
+        Vote newVote = new Vote(null, restaurantRepository.getById(newVoteTo.getRestaurantId()));
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newVoteTo)))
@@ -55,7 +54,7 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER2_MAIL)
     void createIfExist() throws Exception {
         VoteTo newVoteTo = new VoteTo(REST3_ID);
-        Vote newVote = new Vote(null, now(), restaurantRepository.getOne(newVoteTo.getRestaurantId()));
+        Vote newVote = new Vote(null,  restaurantRepository.getOne(newVoteTo.getRestaurantId()));
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newVoteTo)))

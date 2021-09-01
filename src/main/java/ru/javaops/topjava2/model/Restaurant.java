@@ -2,27 +2,20 @@ package ru.javaops.topjava2.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "restaurant")
-@ToString(callSuper = true, exclude = {"menuItems","votes"})
+@Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "restaurant_unique_name_idx")})
+@ToString(callSuper = true, exclude = {"menuItems", "votes"})
 public class Restaurant extends NamedEntity {
 
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -37,7 +30,7 @@ public class Restaurant extends NamedEntity {
     }
 
     public Restaurant(String name) {
-        super(null, name);
+        this(null, name);
     }
 
     public Restaurant(Restaurant rest1) {

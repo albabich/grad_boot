@@ -8,14 +8,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-import static java.time.LocalDate.now;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true, exclude = "restaurant")
-@Table(name = "menu_item")
+@Table(name = "menu_item", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "date", "name"}, name = "menu_item_unique_restaurant_id_date_name_idx")})
 public class MenuItem extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,9 +21,9 @@ public class MenuItem extends NamedEntity {
     @JsonBackReference
     private Restaurant restaurant;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = false, columnDefinition = "date default now()")
     @NotNull
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
 
     @Column(name = "price", nullable = false)
     @NotNull
@@ -37,7 +35,8 @@ public class MenuItem extends NamedEntity {
     }
 
     public MenuItem(Integer id, String name, int price) {
-        this(id, now(), name, price);
+        super(id, name);
+        this.price = price;
     }
 
     public MenuItem(Integer id, LocalDate date, String name, int price) {

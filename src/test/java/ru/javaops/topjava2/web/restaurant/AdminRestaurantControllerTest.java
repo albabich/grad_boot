@@ -86,7 +86,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newRestaurant.setId(newId);
         REST_MATCHER.assertMatch(created, newRestaurant);
-        REST_MATCHER.assertMatch(restaurantRepository.getOne(newId), newRestaurant);
+        REST_MATCHER.assertMatch(restaurantRepository.getById(newId), newRestaurant);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent())
                 .andDo(print());
 
-        REST_MATCHER.assertMatch(restaurantRepository.getOne(REST3_ID), updated);
+        REST_MATCHER.assertMatch(restaurantRepository.getById(REST3_ID), updated);
     }
 
     @Test
@@ -115,9 +115,9 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        Restaurant updated = new Restaurant("");
+        Restaurant invalid = new Restaurant(REST3_ID, "");
         perform(MockMvcRequestBuilders.put(REST_URL + REST3_ID).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(invalid)))
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(print());
     }
@@ -126,23 +126,22 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
-        Restaurant invalid = new Restaurant("Munhell");
+        Restaurant duplicate = new Restaurant("Munhell");
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                .content(JsonUtil.writeValue(duplicate)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(GlobalExceptionHandler.EXCEPTION_DUPLICATE_RESTAURANT)));
-        ;
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        Restaurant updated = new Restaurant("Munhell");
+        Restaurant duplicate = new Restaurant(REST3_ID, "Munhell");
         perform(MockMvcRequestBuilders.put(REST_URL + REST3_ID).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(duplicate)))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(GlobalExceptionHandler.EXCEPTION_DUPLICATE_RESTAURANT)))
                 .andDo(print());

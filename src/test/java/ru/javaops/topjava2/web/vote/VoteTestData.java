@@ -24,12 +24,9 @@ public class VoteTestData {
     public static final Vote vote5 = new Vote(VOTE1_ID + 4, of(2021, Month.APRIL, 6), rest2);
     public static final Vote vote6 = new Vote(VOTE1_ID + 5, of(2021, Month.APRIL, 6), rest3);
 
-    public static Vote getNew() {
-        return new Vote(null, now());
-    }
 
-    public static final Vote newVote = getNew();
-    public static final Vote newVote2 = getNew();
+    public static final Vote newVote = new Vote();
+    public static final Vote newVote2 = new Vote();
 
     public static final List<Vote> voteRest1Today = List.of(vote1);
     public static final List<Vote> voteRest2Today = List.of(vote2);

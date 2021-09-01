@@ -45,7 +45,7 @@ public class ProfileVoteController {
 
         int userId = authUser.id();
         int restaurantId = voteTo.getRestaurantId();
-        Vote vote = new Vote(null, LocalDate.now(), restaurantRepository.getById(restaurantId));
+        Vote vote = new Vote(null, restaurantRepository.getById(restaurantId));
 
         log.info("create vote {} for user {} for restaurant {}", vote, userId, restaurantId);
 
