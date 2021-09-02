@@ -11,7 +11,7 @@ Restaurant Voting Application REST API
 
 #### Details
 
-- Menu-items prises must be entered as quantity of cents (or for example kopecks)
+- Menu-items prices must be entered as quantity of cents (or for example kopecks)
 
 
 #### curl samples
@@ -37,7 +37,7 @@ Restaurant Voting Application REST API
 > `curl -s -X PUT http://localhost:8080/api/admin/restaurants/2  --user admin@gmail.com:admin -H 'Content-Type: application/json' -d '{"name":"MunhellUpdated"}'`
 >
 > #### get Restaurants with MenuItems today
-> `curl -s http://localhost:8080/api/restaurants/with-menu/today --user user1@mail.ru:password1`
+> `curl -s http://localhost:8080/api/restaurants/with-menu/today --user user2@mail.ru:password2`
 >
 > #### get MenuItem 2 for Restaurant 1
 > `curl -s http://localhost:8080/api/admin/restaurants/1/menu-items/2 --user admin@gmail.com:admin`
@@ -55,10 +55,10 @@ Restaurant Voting Application REST API
 > `curl -s -X DELETE http://localhost:8080/api/admin/restaurants/1/menu-items/2  --user admin@gmail.com:admin`
 >
 > #### create Votes for Restaurant 3
-> `curl -s -X POST http://localhost:8080/api/profile/votes --user user1@mail.ru:password1 -H 'Content-Type: application/json' -d '{"restaurantId": 3}'`
+> `curl -s -X POST http://localhost:8080/api/profile/votes --user user2@mail.ru:password2 -H 'Content-Type: application/json' -d '{"restaurantId": 3}'`
 >
 >  #### create Votes for Restaurant not found
-> `curl -s -X POST http://localhost:8080/api/profile/votes --user user1@mail.ru:password1 -H 'Content-Type: application/json' -d '{"restaurantId": 100}'`
+> `curl -s -X POST http://localhost:8080/api/profile/votes --user user2@mail.ru:password2 -H 'Content-Type: application/json' -d '{"restaurantId": 100}'`
 >
 > #### get Restaurants with Votes today
-> `curl -s http://localhost:8080/api/restaurants/with-votes/today --user user1@mail.ru:password1`
+> `curl -s http://localhost:8080/api/restaurants/with-votes/today --user user2@mail.ru:password2`
