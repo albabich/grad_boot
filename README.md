@@ -1,6 +1,8 @@
 Restaurant Voting Application REST API
 ===============================
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/eb9fad2ed2054ebc9cb0decf256e7bfb)](https://app.codacy.com/gh/albabich/grad_boot?utm_source=github.com&utm_medium=referral&utm_content=albabich/grad_boot&utm_campaign=Badge_Grade_Settings)
+
 #### Description
 
 - Spring Boot 2.5, Lombok, H2, Swagger/OpenAPI 3.0, Caffeine Cache
