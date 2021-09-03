@@ -10,7 +10,8 @@ Restaurant Voting Application REST API
   Users can request results of voting for today.
 
 #### Details
--   
+-  For easy testing in application created some restaurants with menus and some users and admin.
+>  Credentials: `admin@gmail.com admin`, `user2@mail.ru password2`, `user3@mail.ru password3`, `user4@mail.ru password4`
 
 
 #### Requirements
@@ -23,7 +24,8 @@ Run `mvn spring-boot:run` in root directory.
 #### To view Swagger 2 API docs
 
 Run the server and browse to [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
- or  look at generated [API docs](https://github.com/albabich/grad_boot/blob/master/REST%20API.json)
+ or  look at generated [API docs](https://github.com/albabich/grad_boot/blob/master/REST%20API.json).
+> For testing you may authorize with `admin@gmail.com admin`
 #### curl samples
 
 > For windows use `Git Bash`
