@@ -23,7 +23,7 @@ Run `mvn spring-boot:run` in root directory.
 #### To view Swagger 2 API docs
 
 Run the server and browse to [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
- or  look at generated [API docs](REST API.json)
+ or  look at generated [API docs](https://github.com/albabich/grad_boot/blob/master/REST%20API.json)
 #### curl samples
 
 > For windows use `Git Bash`
