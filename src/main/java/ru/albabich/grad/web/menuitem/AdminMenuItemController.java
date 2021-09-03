@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.albabich.grad.error.NotFoundException;
 import ru.albabich.grad.model.MenuItem;
 import ru.albabich.grad.repository.MenuItemRepository;
 import ru.albabich.grad.repository.RestaurantRepository;
@@ -22,6 +23,7 @@ import java.net.URI;
 import java.util.List;
 
 import static java.time.LocalDate.now;
+import static ru.albabich.grad.util.MenuItemUtil.createTo;
 
 
 @RestController
@@ -40,26 +42,26 @@ public class AdminMenuItemController {
     }
 
     @GetMapping("/{restaurantId}/menu-items/{id}")
-    public ResponseEntity<MenuItem> get(@PathVariable int id, @PathVariable int restaurantId) {
+    public MenuItemTo get(@PathVariable int id, @PathVariable int restaurantId) {
         log.info("get menuItem {} for restaurant {}", id, restaurantId);
-        return ResponseEntity.of(menuItemRepository.get(id, restaurantId));
+        return createTo(menuItemRepository.get(id, restaurantId).orElseThrow(() -> new NotFoundException(String.format("MenuItem %s for restaurant %s not found", id, restaurantId))));
     }
 
     @GetMapping("/{restaurantId}/menu-items/today")
-    public List<MenuItem> getAllForRestaurantToday(@PathVariable int restaurantId) {
+    public List<MenuItemTo> getAllForRestaurantToday(@PathVariable int restaurantId) {
         log.info("get menuItems for restaurant {} today", restaurantId);
-        return menuItemRepository.getAllForRestaurantByDate(restaurantId, now());
+        return MenuItemUtil.getTos(menuItemRepository.getAllForRestaurantByDate(restaurantId, now()));
     }
 
     @CacheEvict(allEntries = true)
     @Transactional
     @PostMapping(value = "/{restaurantId}/menu-items", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuItem> createWithLocation(@Valid @RequestBody MenuItemTo menuItemTo, @PathVariable int restaurantId) {
+    public ResponseEntity<MenuItemTo> createWithLocation(@Valid @RequestBody MenuItemTo menuItemTo, @PathVariable int restaurantId) {
         log.info("create menuItem{} for restaurant {}", menuItemTo, restaurantId);
         ValidationUtil.checkNew(menuItemTo);
         MenuItem menuItem = MenuItemUtil.createNewFromTo(menuItemTo);
         menuItem.setRestaurant(restaurantRepository.getById(restaurantId));
-        MenuItem created = menuItemRepository.save(menuItem);
+        MenuItemTo created = createTo(menuItemRepository.save(menuItem));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/" + restaurantId + "/menu-items" + "/{id}")
                 .buildAndExpand(created.getId()).toUri();

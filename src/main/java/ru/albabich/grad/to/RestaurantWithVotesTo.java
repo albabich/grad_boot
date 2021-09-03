@@ -6,11 +6,11 @@ import java.beans.ConstructorProperties;
 import java.util.Objects;
 
 @ToString(callSuper = true)
-public class RestaurantTo extends NamedTo {
+public class RestaurantWithVotesTo extends NamedTo {
     private final int voteCounter;
 
     @ConstructorProperties({"id", "name", "voteCounter"})
-    public RestaurantTo(int id, String name, int voteCounter) {
+    public RestaurantWithVotesTo(int id, String name, int voteCounter) {
         super(id, name);
         this.voteCounter = voteCounter;
     }
@@ -19,7 +19,7 @@ public class RestaurantTo extends NamedTo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RestaurantTo that = (RestaurantTo) o;
+        RestaurantWithVotesTo that = (RestaurantWithVotesTo) o;
         return voteCounter == that.voteCounter && name.equals(that.name);
     }
 

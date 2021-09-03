@@ -1,9 +1,11 @@
 package ru.albabich.grad.to;
 
 import lombok.*;
-import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter
@@ -12,16 +14,20 @@ import javax.validation.constraints.NotNull;
 public class MenuItemTo extends NamedTo {
 
     @NotNull
-    @Range(min = 1)
-    private  int price;
+    @Positive
+    @Digits(integer = 7, fraction = 2)
+    private double price;
 
-    public MenuItemTo(Integer id, String name, int price) {
-        super(id, name);
+    private LocalDate localDate;
+
+    public MenuItemTo(String name, double price) {
+        super(null, name);
         this.price = price;
     }
 
-    public MenuItemTo(String name, int price) {
-        super(null, name);
+    public MenuItemTo(Integer id, LocalDate date, String name, double price) {
+        super(id, name);
         this.price = price;
+        this.localDate = date;
     }
 }

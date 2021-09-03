@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.albabich.grad.model.Restaurant;
 import ru.albabich.grad.repository.RestaurantRepository;
-import ru.albabich.grad.to.RestaurantTo;
+import ru.albabich.grad.to.RestaurantWithVotesTo;
+import ru.albabich.grad.to.RestaurantWithMenuTo;
 import ru.albabich.grad.util.RestaurantUtil;
 
 import java.time.LocalDate;
@@ -30,13 +31,14 @@ public class RestaurantController {
 
     @Cacheable
     @GetMapping("/with-menu/today")
-    public List<Restaurant> getAllWithMenuItemsToday() {
+    public List<RestaurantWithMenuTo> getAllWithMenuItemsToday() {
         log.info("getAll with menuItems today");
-        return restaurantRepository.getAllWithMenuItemsByDate(LocalDate.now());
+        List<Restaurant> restaurants = restaurantRepository.getAllWithMenuItemsByDate(LocalDate.now());
+        return RestaurantUtil.getTosWithMenu(restaurants);
     }
 
     @GetMapping("/with-votes/today")
-    public List<RestaurantTo> getAllWithVotesToday() {
+    public List<RestaurantWithVotesTo> getAllWithVotesToday() {
         log.info("getAll with votes today");
         return RestaurantUtil.getTos(restaurantRepository.findAllByVoteDate(LocalDate.now()));
     }
