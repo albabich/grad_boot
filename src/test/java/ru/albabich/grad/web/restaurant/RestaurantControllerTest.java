@@ -23,7 +23,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RestaurantTestData.REST_WITH_MENU_ITEMS_MATCHER.contentJson(getTosWithMenu(RestaurantTestData.restaurantsWithMenuToday)));
+                .andExpect(RestaurantTestData.REST_WITH_MENU_ITEMS_MATCHER.contentJson(getTosWithMenu(RestaurantTestData.restaurants)));
     }
 
     @Test

@@ -22,7 +22,6 @@ public class RestaurantTestData {
     public static final Restaurant rest1 = new Restaurant(REST1_ID, "Khachapuri and Wine");
     public static final Restaurant rest2 = new Restaurant(REST2_ID, "Munhell");
     public static final Restaurant rest3 = new Restaurant(REST3_ID, "Kwakinn");
-    public static final List<Restaurant> restaurants = List.of(rest1, rest3, rest2);
 
     static {
         rest1.setMenuItems(MenuItemTestData.menuItemsRest1Today);
@@ -32,8 +31,7 @@ public class RestaurantTestData {
         rest2.setVotes(VoteTestData.voteRest2Today);
         rest3.setVotes(VoteTestData.voteRest3Today);
     }
-
-    public static final List<Restaurant> restaurantsWithMenuToday = List.of(rest1, rest3, rest2);
+    public static final List<Restaurant> restaurants = List.of(rest1, rest3, rest2);
 
     public static Restaurant getNew() {
         return new Restaurant(null, "New Restaurant");
