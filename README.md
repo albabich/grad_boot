@@ -1,3 +1,6 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c585a6a546ec4ee6b4551b7cd1ab4b65)](https://www.codacy.com/gh/albabich/grad_boot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=albabich/grad_boot&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://app.travis-ci.com/albabich/grad_boot.svg?branch=master)](https://travis-ci.com/albabich/grad_boot)
+
 Restaurant Voting Application REST API
 ===============================
 
