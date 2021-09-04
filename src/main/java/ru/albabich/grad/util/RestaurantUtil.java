@@ -10,12 +10,9 @@ import java.util.List;
 public class RestaurantUtil {
     public static List<RestaurantWithVotesTo> getTosWithVotes(Collection<Restaurant> restaurants) {
         return restaurants.stream()
-                .map(restaurant -> new RestaurantWithVotesTo(restaurant.getId(), restaurant.getName(), restaurant.getVotes().size()))
+                .map(restaurant -> new RestaurantWithVotesTo(restaurant.getId(),
+                        restaurant.getName(), restaurant.getVotes().size()))
                 .toList();
-    }
-
-    public static RestaurantWithVotesTo createTo(Restaurant restaurant, int votes) {
-        return new RestaurantWithVotesTo(restaurant.getId(), restaurant.getName(), votes);
     }
 
     public static List<RestaurantWithMenuTo> getTosWithMenu(List<Restaurant> restaurants) {

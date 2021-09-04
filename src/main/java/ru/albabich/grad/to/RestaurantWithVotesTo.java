@@ -7,9 +7,9 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 public class RestaurantWithVotesTo extends NamedTo {
-    private int voteCounter;
+    private Integer voteCounter;
 
-    public RestaurantWithVotesTo(int id, String name, int voteCounter) {
+    public RestaurantWithVotesTo(Integer id, String name, Integer voteCounter) {
         super(id, name);
         this.voteCounter = voteCounter;
     }
