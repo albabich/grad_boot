@@ -54,7 +54,7 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER2_MAIL)
     void createIfExist() throws Exception {
         VoteTo newVoteTo = new VoteTo(REST3_ID);
-        Vote newVote = new Vote(null,  restaurantRepository.getOne(newVoteTo.getRestaurantId()));
+        Vote newVote = new Vote(null, restaurantRepository.getById(newVoteTo.getRestaurantId()));
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newVoteTo)))
@@ -65,7 +65,7 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newVote.setId(newId);
         VOTE_MATCHER.assertMatch(created, newVote);
-        Vote actual = voteRepository.getOne(newId);
+        Vote actual = voteRepository.getById(newId);
         VOTE_MATCHER.assertMatch(actual, newVote);
         REST_MATCHER.assertMatch(actual.getRestaurant(), rest3);
     }

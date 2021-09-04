@@ -7,10 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.albabich.grad.model.Restaurant;
 import ru.albabich.grad.repository.RestaurantRepository;
-import ru.albabich.grad.to.RestaurantWithVotesTo;
 import ru.albabich.grad.to.RestaurantWithMenuTo;
+import ru.albabich.grad.to.RestaurantWithVotesTo;
 import ru.albabich.grad.util.RestaurantUtil;
 
 import java.time.LocalDate;

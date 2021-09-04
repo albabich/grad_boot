@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.albabich.grad.model.Restaurant;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 @Transactional(readOnly = true)
