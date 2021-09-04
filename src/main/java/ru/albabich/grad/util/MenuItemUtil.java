@@ -12,6 +12,10 @@ public class MenuItemUtil {
         return new MenuItem(null, menuItemTo.getName(), (int) (menuItemTo.getPrice() * 100));
     }
 
+    public static MenuItem createFromTo(MenuItemTo menuItemTo) {
+        return new MenuItem(menuItemTo.getId(), menuItemTo.getName(), (int) (menuItemTo.getPrice() * 100));
+    }
+
     public static MenuItem updateFromTo(MenuItem menuItem, MenuItemTo menuItemTo) {
         menuItem.setName(menuItemTo.getName());
         menuItem.setPrice((int) (menuItemTo.getPrice() * 100));

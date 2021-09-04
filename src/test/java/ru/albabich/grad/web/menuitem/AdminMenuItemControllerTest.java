@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.albabich.grad.util.MenuItemUtil.createTo;
 import static ru.albabich.grad.web.user.UserTestData.ADMIN_MAIL;
 
 class AdminMenuItemControllerTest extends AbstractControllerTest {
@@ -38,30 +39,30 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MenuItemTestData.MENU_ITEM_MATCHER.contentJson(MenuItemTestData.menuItem1));
+                .andExpect(MenuItemTestData.MENU_ITEM_TO_MATCHER.contentJson(createTo(MenuItemTestData.menuItem1)));
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getNotFound() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + RestaurantTestData.REST1_ID + "/menu-items/" + MenuItemTestData.NOT_FOUND))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        MenuItemTo newMenuItemTo = new MenuItemTo("idaho potatoes", 28000);
+        MenuItemTo newMenuItemTo = new MenuItemTo("idaho potatoes", 280.99);
         MenuItem newMenuItem = MenuItemUtil.createNewFromTo(newMenuItemTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + RestaurantTestData.REST1_ID + "/menu-items/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newMenuItemTo)))
                 .andDo(print());
 
-        MenuItem created = MenuItemTestData.MENU_ITEM_MATCHER.readFromJson(action);
-        int newId = created.id();
+        MenuItemTo createdTo = MenuItemTestData.MENU_ITEM_TO_MATCHER.readFromJson(action);
+        int newId = createdTo.id();
         newMenuItem.setId(newId);
-        MenuItemTestData.MENU_ITEM_MATCHER.assertMatch(created, newMenuItem);
+        MenuItemTestData.MENU_ITEM_MATCHER.assertMatch(MenuItemUtil.createFromTo(createdTo), newMenuItem);
 
         MenuItem actualMenuItem = menuItemRepository.findById(newId).orElse(null);
         MenuItemTestData.MENU_ITEM_MATCHER.assertMatch(actualMenuItem, newMenuItem);

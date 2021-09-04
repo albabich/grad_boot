@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class RestaurantUtil {
-    public static List<RestaurantWithVotesTo> getTos(Collection<Restaurant> restaurants) {
+    public static List<RestaurantWithVotesTo> getTosWithVotes(Collection<Restaurant> restaurants) {
         return restaurants.stream()
                 .map(restaurant -> createTo(restaurant, restaurant.getVotes().size()))
                 .toList();

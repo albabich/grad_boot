@@ -9,7 +9,8 @@ import ru.albabich.grad.web.AbstractControllerTest;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.albabich.grad.util.RestaurantUtil.getTos;
+import static ru.albabich.grad.util.RestaurantUtil.getTosWithVotes;
+import static ru.albabich.grad.util.RestaurantUtil.getTosWithMenu;
 import static ru.albabich.grad.web.user.UserTestData.USER2_MAIL;
 
 class RestaurantControllerTest extends AbstractControllerTest {
@@ -22,7 +23,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RestaurantTestData.REST_WITH_MENU_ITEMS_MATCHER.contentJson(RestaurantTestData.restaurantsWithMenuToday));
+                .andExpect(RestaurantTestData.REST_WITH_MENU_ITEMS_MATCHER.contentJson(getTosWithMenu(RestaurantTestData.restaurantsWithMenuToday)));
     }
 
     @Test
@@ -32,6 +33,6 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RestaurantTestData.REST_TO_WITH_VOTES_MATCHER.contentJson(getTos(RestaurantTestData.restaurants)));
+                .andExpect(RestaurantTestData.REST_TO_WITH_VOTES_MATCHER.contentJson(getTosWithVotes(RestaurantTestData.restaurants)));
     }
 }

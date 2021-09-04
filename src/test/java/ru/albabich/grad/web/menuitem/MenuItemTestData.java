@@ -1,6 +1,7 @@
 package ru.albabich.grad.web.menuitem;
 
 import ru.albabich.grad.model.MenuItem;
+import ru.albabich.grad.to.MenuItemTo;
 import ru.albabich.grad.web.MatcherFactory;
 
 import java.time.Month;
@@ -11,6 +12,7 @@ import static java.time.LocalDate.of;
 
 public class MenuItemTestData {
     public static final MatcherFactory.Matcher<MenuItem> MENU_ITEM_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(MenuItem.class, "restaurant");
+    public static final MatcherFactory.Matcher<MenuItemTo> MENU_ITEM_TO_MATCHER = MatcherFactory.usingEqualsComparator(MenuItemTo.class);
 
     public static final int NOT_FOUND = 100;
     public static final int MENU_ITEM1_ID = 1;

@@ -1,25 +1,18 @@
 package ru.albabich.grad.web.restaurant;
 
 import ru.albabich.grad.model.Restaurant;
-import ru.albabich.grad.web.menuitem.MenuItemTestData;
-import ru.albabich.grad.web.vote.VoteTestData;
+import ru.albabich.grad.to.RestaurantWithMenuTo;
 import ru.albabich.grad.to.RestaurantWithVotesTo;
 import ru.albabich.grad.web.MatcherFactory;
+import ru.albabich.grad.web.menuitem.MenuItemTestData;
+import ru.albabich.grad.web.vote.VoteTestData;
 
 import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class RestaurantTestData {
     public static final MatcherFactory.Matcher<Restaurant> REST_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuItems", "votes", "$$_hibernate_interceptor");
     public static final MatcherFactory.Matcher<RestaurantWithVotesTo> REST_TO_WITH_VOTES_MATCHER = MatcherFactory.usingEqualsComparator(RestaurantWithVotesTo.class);
-    public static final MatcherFactory.Matcher<Restaurant> REST_WITH_MENU_ITEMS_MATCHER = MatcherFactory.usingAssertions(Restaurant.class,
-//     No need use ignoringAllOverriddenEquals, see https://assertj.github.io/doc/#breaking-changes
-            (a, e) -> {
-                throw new UnsupportedOperationException();
-            },
-            (a, e) -> assertThat(a).usingRecursiveComparison()
-                    .ignoringFields("menuItems.restaurant", "votes").isEqualTo(e));
+    public static final MatcherFactory.Matcher<RestaurantWithMenuTo> REST_WITH_MENU_ITEMS_MATCHER = MatcherFactory.usingEqualsComparator(RestaurantWithMenuTo.class);
 
     public static final int NOT_FOUND = 100;
     public static final int REST1_ID = 1;
