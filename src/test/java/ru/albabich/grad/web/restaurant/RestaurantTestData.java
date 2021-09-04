@@ -9,6 +9,8 @@ import ru.albabich.grad.web.vote.VoteTestData;
 
 import java.util.List;
 
+import static ru.albabich.grad.web.vote.VoteTestData.*;
+
 public class RestaurantTestData {
     public static final MatcherFactory.Matcher<Restaurant> REST_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuItems", "votes", "$$_hibernate_interceptor");
     public static final MatcherFactory.Matcher<RestaurantWithVotesTo> REST_TO_WITH_VOTES_MATCHER = MatcherFactory.usingEqualsComparator(RestaurantWithVotesTo.class);
@@ -27,9 +29,9 @@ public class RestaurantTestData {
         rest1.setMenuItems(MenuItemTestData.menuItemsRest1Today);
         rest2.setMenuItems(MenuItemTestData.menuItemsRest2Today);
         rest3.setMenuItems(MenuItemTestData.menuItemsRest3Today);
-        rest1.setVotes(VoteTestData.voteRest1Today);
-        rest2.setVotes(VoteTestData.voteRest2Today);
-        rest3.setVotes(VoteTestData.voteRest3Today);
+        rest1.setVotes(List.of(vote1));
+        rest2.setVotes(List.of(vote2));
+        rest3.setVotes(List.of(vote4));
     }
     public static final List<Restaurant> restaurants = List.of(rest1, rest3, rest2);
 

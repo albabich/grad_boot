@@ -33,13 +33,12 @@ public class RestaurantController {
     @GetMapping("/with-menu/today")
     public List<RestaurantWithMenuTo> getAllWithMenuItemsToday() {
         log.info("getAll with menuItems today");
-        List<Restaurant> restaurants = restaurantRepository.getAllWithMenuItemsByDate(LocalDate.now());
-        return RestaurantUtil.getTosWithMenu(restaurants);
+        return RestaurantUtil.getTosWithMenu(restaurantRepository.getAllWithMenuItemsByDate(LocalDate.now()));
     }
 
     @GetMapping("/with-votes/today")
     public List<RestaurantWithVotesTo> getAllWithVotesToday() {
         log.info("getAll with votes today");
-        return RestaurantUtil.getTosWithVotes(restaurantRepository.findAllByVoteDate(LocalDate.now()));
+        return RestaurantUtil.getTosWithVotes(restaurantRepository.findAllWithVoteByDate(LocalDate.now()));
     }
 }
