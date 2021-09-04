@@ -9,8 +9,6 @@ import java.util.List;
 import static java.time.LocalDate.now;
 import static java.time.LocalDate.of;
 import static ru.albabich.grad.web.restaurant.RestaurantTestData.*;
-import static ru.albabich.grad.web.user.UserTestData.user2;
-import static ru.albabich.grad.web.user.UserTestData.user3;
 
 public class VoteTestData {
     public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "user", "restaurant");
