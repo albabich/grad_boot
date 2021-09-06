@@ -18,7 +18,7 @@ public class MenuItem extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "menu")
     private Restaurant restaurant;
 
     @Column(name = "date", nullable = false, columnDefinition = "date default now()")

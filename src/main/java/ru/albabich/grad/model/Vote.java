@@ -17,7 +17,7 @@ public class Vote extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "user")
     private User user;
 
     @Column(name = "date", nullable = false, columnDefinition = "date default now()")

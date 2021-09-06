@@ -62,7 +62,7 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("date DESC")
-    @JsonManagedReference
+    @JsonManagedReference(value = "user")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Vote> votes;
 
