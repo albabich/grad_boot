@@ -1,6 +1,9 @@
 package ru.albabich.grad.to;
 
 import lombok.*;
+import ru.albabich.grad.model.Vote;
+
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter
@@ -9,8 +12,8 @@ import lombok.*;
 public class RestaurantWithVotesTo extends NamedTo {
     private Integer voteCounter;
 
-    public RestaurantWithVotesTo(Integer id, String name, Integer voteCounter) {
+    public RestaurantWithVotesTo(Integer id, String name, List<Vote> votes) {
         super(id, name);
-        this.voteCounter = voteCounter;
+        this.voteCounter = votes.size();
     }
 }
