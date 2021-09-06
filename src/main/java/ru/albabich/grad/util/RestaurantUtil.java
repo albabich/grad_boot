@@ -11,7 +11,7 @@ public class RestaurantUtil {
     public static List<RestaurantWithVotesTo> getTosWithVotes(Collection<Restaurant> restaurants) {
         return restaurants.stream()
                 .map(restaurant -> new RestaurantWithVotesTo(restaurant.getId(),
-                        restaurant.getName(), restaurant.getVotes().size()))
+                        restaurant.getName(), restaurant.getVotes() != null ? restaurant.getVotes().size() : 0))
                 .toList();
     }
 
