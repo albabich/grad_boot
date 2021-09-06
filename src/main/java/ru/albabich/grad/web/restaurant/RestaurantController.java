@@ -38,6 +38,6 @@ public class RestaurantController {
     @GetMapping("/with-votes/today")
     public List<RestaurantWithVotesTo> getAllWithVotesToday() {
         log.info("getAll with votes today");
-        return RestaurantUtil.getTosWithVotes(restaurantRepository.findAllWithVoteByDate(LocalDate.now()));
+        return RestaurantUtil.getTosWithVotes(restaurantRepository.getAllWithVoteByDate(LocalDate.now()));
     }
 }

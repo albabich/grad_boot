@@ -13,5 +13,5 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
     List<Restaurant> getAllWithMenuItemsByDate(LocalDate date);
 
     @Query("SELECT DISTINCT(r) FROM Restaurant r JOIN FETCH  r.votes v WHERE v.date=:localDate ORDER BY r.name")
-    List<Restaurant> findAllWithVoteByDate(LocalDate localDate);
+    List<Restaurant> getAllWithVoteByDate(LocalDate localDate);
 }
