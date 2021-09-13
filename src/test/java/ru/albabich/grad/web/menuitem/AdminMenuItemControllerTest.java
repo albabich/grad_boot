@@ -17,6 +17,11 @@ import ru.albabich.grad.util.MenuItemUtil;
 import ru.albabich.grad.web.AbstractControllerTest;
 import ru.albabich.grad.web.GlobalExceptionHandler;
 
+import java.time.LocalDate;
+import java.time.Month;
+
+import static java.time.LocalDate.now;
+import static java.time.LocalDate.of;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,7 +32,7 @@ import static ru.albabich.grad.web.user.UserTestData.ADMIN_MAIL;
 
 class AdminMenuItemControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = AdminMenuItemController.REST_URL + '/';
+    private static final String REST_URL = "/api/admin/restaurants/";
 
     @Autowired
     MenuItemRepository menuItemRepository;
@@ -52,7 +57,7 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        MenuItemTo newMenuItemTo = new MenuItemTo("idaho potatoes", 280.99);
+        MenuItemTo newMenuItemTo = new MenuItemTo(LocalDate.now(), "idaho potatoes", 280.99);
         MenuItem newMenuItem = MenuItemUtil.createNewFromTo(newMenuItemTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + RestaurantTestData.REST1_ID + "/menu-items/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -71,7 +76,7 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        MenuItemTo updatedTo = new MenuItemTo("salad updated", 280);
+        MenuItemTo updatedTo = new MenuItemTo(of(2021, Month.SEPTEMBER, 24), "salad updated", 280);
         perform(MockMvcRequestBuilders.put(REST_URL + RestaurantTestData.REST1_ID + "/menu-items/" + MenuItemTestData.MENU_ITEM1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updatedTo)))
@@ -85,7 +90,7 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
-        MenuItemTo invalid = new MenuItemTo("", 0);
+        MenuItemTo invalid = new MenuItemTo(null, "", 0);
         perform(MockMvcRequestBuilders.post(REST_URL + RestaurantTestData.REST1_ID + "/menu-items/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -96,7 +101,7 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        MenuItemTo invalid = new MenuItemTo("", 280);
+        MenuItemTo invalid = new MenuItemTo(null, "", 280);
         perform(MockMvcRequestBuilders.put(REST_URL + RestaurantTestData.REST1_ID + "/menu-items/" + MenuItemTestData.MENU_ITEM1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
@@ -108,7 +113,7 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
-        MenuItemTo duplicate = new MenuItemTo("salad", 150);
+        MenuItemTo duplicate = new MenuItemTo(now(), "salad", 150);
         perform(MockMvcRequestBuilders.post(REST_URL + RestaurantTestData.REST1_ID + "/menu-items/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(duplicate)))
@@ -121,7 +126,7 @@ class AdminMenuItemControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        MenuItemTo duplicate = new MenuItemTo("lobio", 280);
+        MenuItemTo duplicate = new MenuItemTo(now(), "lobio", 280);
         perform(MockMvcRequestBuilders.put(REST_URL + RestaurantTestData.REST1_ID + "/menu-items/" + MenuItemTestData.MENU_ITEM1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(duplicate)))

@@ -10,7 +10,7 @@ import java.time.LocalTime;
 
 @UtilityClass
 public class ValidationUtil {
-    private static final LocalTime CLOSEREVOTING = LocalTime.of(11, 0);
+    private static final LocalTime CLOSE_REVOTING = LocalTime.of(11, 0);
 
 
     public static void checkNew(HasId bean) {
@@ -35,8 +35,8 @@ public class ValidationUtil {
     }
 
     public static void checkChangeVoteAbility() {
-        if (LocalTime.now().isAfter(CLOSEREVOTING)) {
-            throw new VoteException(String.format("You can't change vote after %s", CLOSEREVOTING));
+        if (LocalTime.now().isAfter(CLOSE_REVOTING)) {
+            throw new VoteException(String.format("You can't change vote after %s", CLOSE_REVOTING));
         }
     }
 }

@@ -1,6 +1,7 @@
 package ru.albabich.grad.web.restaurant;
 
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,15 +23,12 @@ import java.util.List;
 @RestController
 @CacheConfig(cacheNames = "restaurantsAndMenus")
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantController {
     public static final String REST_URL = "/api/admin/restaurants";
 
     private final RestaurantRepository restaurantRepository;
-
-    public AdminRestaurantController(RestaurantRepository restaurantRepository) {
-        this.restaurantRepository = restaurantRepository;
-    }
 
     @GetMapping
     public List<Restaurant> getAll() {

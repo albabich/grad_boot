@@ -13,16 +13,19 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "restaurant_unique_name_idx")})
-@ToString(callSuper = true, exclude = {"menuItems", "votes"})
+@ToString(callSuper = true)
 public class Restaurant extends NamedEntity {
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @JsonManagedReference(value = "menu")
+    @OrderBy("id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<MenuItem> menuItems;
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @JsonManagedReference(value = "rest")
+//    @JsonManagedReference(value = "rest")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Vote> votes;
 
@@ -34,7 +37,7 @@ public class Restaurant extends NamedEntity {
         this(null, name);
     }
 
-    public Restaurant(Restaurant rest1) {
-        this(rest1.id, rest1.name);
+    public Restaurant(Restaurant rest) {
+        this(rest.id, rest.name);
     }
 }

@@ -20,6 +20,9 @@ public interface MenuItemRepository extends BaseRepository<MenuItem> {
                 () -> new IllegalRequestDataException("MenuItem id=" + id + " doesn't belong to Restaurant id=" + restaurantId));
     }
 
-    @Query("SELECT m FROM MenuItem m WHERE m.restaurant.id=:restaurantId and m.date=:date ORDER BY m.id")
+    @Query("SELECT m FROM MenuItem m WHERE m.restaurant.id=:restaurantId ORDER BY m.id")
+    List<MenuItem> getAllForRestaurant(int restaurantId);
+
+    @Query("SELECT m FROM MenuItem m WHERE m.restaurant.id=:restaurantId and m.available=:date ORDER BY m.id")
     List<MenuItem> getAllForRestaurantByDate(int restaurantId, LocalDate date);
 }

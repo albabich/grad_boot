@@ -18,16 +18,18 @@ public class MenuItemTo extends NamedTo {
     @Digits(integer = 7, fraction = 2)
     private double price;
 
-    private LocalDate localDate;
+    @NotNull
+    private LocalDate available;
 
-    public MenuItemTo(String name, double price) {
+    public MenuItemTo(LocalDate available, String name, double price) {
         super(null, name);
         this.price = price;
+        this.available = available;
     }
 
-    public MenuItemTo(Integer id, LocalDate date, String name, double price) {
+    public MenuItemTo(Integer id, LocalDate available, String name, double price) {
         super(id, name);
         this.price = price;
-        this.localDate = date;
+        this.available = available;
     }
 }

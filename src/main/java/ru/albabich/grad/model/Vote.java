@@ -1,7 +1,9 @@
 package ru.albabich.grad.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,21 +14,22 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @ToString(callSuper = true, exclude = {"user", "restaurant"})
-@Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "user_id"}, name = "vote_unique_date_user_id_idx")})
+@Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"vote_date", "user_id"}, name = "vote_unique_vote_date_user_id_idx")})
 public class Vote extends BaseEntity {
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference(value = "user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @Column(name = "date", nullable = false, columnDefinition = "date default now()")
+    @Column(name = "vote_date", nullable = false, columnDefinition = "date default now()")
     @NotNull
-    private LocalDate date = LocalDate.now();
+    private LocalDate voteDate = LocalDate.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @JsonBackReference(value = "rest")
+//    @JsonBackReference(value = "rest")
     private Restaurant restaurant;
 
     public Vote(Integer id, Restaurant restaurant) {
@@ -34,9 +37,9 @@ public class Vote extends BaseEntity {
         this.restaurant = restaurant;
     }
 
-    public Vote(Integer id, LocalDate date, Restaurant restaurant) {
+    public Vote(Integer id, LocalDate voteDate, Restaurant restaurant) {
         super(id);
-        this.date = date;
+        this.voteDate = voteDate;
         this.restaurant = restaurant;
     }
 }

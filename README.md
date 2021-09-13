@@ -1,18 +1,33 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/c585a6a546ec4ee6b4551b7cd1ab4b65)](https://www.codacy.com/gh/albabich/grad_boot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=albabich/grad_boot&amp;utm_campaign=Badge_Grade)
-[![Build Status](https://app.travis-ci.com/albabich/grad_boot.svg?branch=master)](https://travis-ci.com/albabich/grad_boot)
 
 Restaurant Voting Application REST API
 ===============================
 
 #### Description
 
-- Spring Boot 2.5, Lombok, H2, Swagger/OpenAPI 3.0, Caffeine Cache
-- Java Enterprise project with registration/authorization and role-based access rights (USER, ADMIN). Admin could
-  create/edit/delete users. Admin also could create/edit/delete restaurants and them menus. Users could manage them
-  profile and vote on which restaurant they want to have lunch at. User can change his vote until 11:00. Users can request all restaurants with menus for today.
-  Users can request results of voting for today.
+ This is solution for test task:
+  
+> Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) **without frontend**.
+
+>The task is:
+
+>Build a voting system for deciding where to have lunch.
+
+>* 2 types of users: admin and regular users
+>* Admin can input a restaurant and it's lunch menu of the day (2-5 items usually, just a dish name and price)
+>* Menu changes each day (admins do the updates)
+>* Users can vote on which restaurant they want to have lunch at
+>* Only one vote counted per user
+>* If user votes again the same day:
+>    - If it is before 11:00 we assume that he changed his mind.
+>    - If it is after 11:00 then it is too late, vote can't be changed
+
+>Each restaurant provides a new menu each day.
+
 
 #### Details
+- Spring Boot 2.5, Lombok, H2, Swagger/OpenAPI 3.0, Caffeine Cache
+- Java Enterprise project with registration/authorization and role-based access rights (USER, ADMIN).
 -  For easy testing in application created some restaurants with menus and some users and admin.
 >  Credentials: `admin@gmail.com admin`, `user2@mail.ru password2`, `user3@mail.ru password3`, `user4@mail.ru password4`
 
@@ -28,52 +43,4 @@ Run `mvn spring-boot:run` in root directory.
 
 Run the server and browse to [localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
  or  look at generated [API docs](https://github.com/albabich/grad_boot/blob/master/REST%20API.json).
-> For testing you may authorize with `admin@gmail.com admin`
-#### curl samples
-
-> For windows use `Git Bash`
->
-> #### get All Restaurants
-> `curl -s http://localhost:8080/api/admin/restaurants --user admin@gmail.com:admin`
->
-> #### get Restaurants 1
-> `curl -s http://localhost:8080/api/admin/restaurants/1 --user admin@gmail.com:admin`
->
-> #### get Restaurants not found
-> `curl -s http://localhost:8080/api/admin/restaurants/100 --user admin@gmail.com:admin`
->
-> #### delete Restaurants 3
-> `curl -s -X DELETE http://localhost:8080/api/admin/restaurants/3 --user admin@gmail.com:admin`
->
-> #### create Restaurants
-> `curl -s -X POST http://localhost:8080/api/admin/restaurants  --user admin@gmail.com:admin -H 'Content-Type: application/json' -d '{"name":"O'\''Hooligans"}'`
->
-> #### update Restaurants 2
-> `curl -s -X PUT http://localhost:8080/api/admin/restaurants/2  --user admin@gmail.com:admin -H 'Content-Type: application/json' -d '{"name":"MunhellUpdated"}'`
->
-> #### get Restaurants with MenuItems today
-> `curl -s http://localhost:8080/api/restaurants/with-menu/today --user user2@mail.ru:password2`
->
-> #### get MenuItem 2 for Restaurant 1
-> `curl -s http://localhost:8080/api/admin/restaurants/1/menu-items/2 --user admin@gmail.com:admin`
->
->  #### get MenuItem not found for Restaurant 1
-> `curl -s http://localhost:8080/api/admin/restaurants/1/menu-items/100 --user admin@gmail.com:admin`
->
-> #### create MenuItems for Restaurant 2
-> `curl -s -X POST http://localhost:8080/api/admin/restaurants/2/menu-items  --user admin@gmail.com:admin -H 'Content-Type: application/json' -d '{"name":"idaho potatoes","price":280.99}'`
->
-> #### update MenuItems 2 for Restaurant 1
-> `curl -s -X PUT http://localhost:8080/api/admin/restaurants/1/menu-items/2 --user admin@gmail.com:admin -H 'Content-Type: application/json' -d '{"name":"lobio","price":210.50}'`
->
-> #### delete MenuItems 2 for Restaurant 1
-> `curl -s -X DELETE http://localhost:8080/api/admin/restaurants/1/menu-items/2  --user admin@gmail.com:admin`
->
-> #### create Votes for Restaurant 3
-> `curl -s -X POST http://localhost:8080/api/profile/votes --user user2@mail.ru:password2 -H 'Content-Type: application/json' -d '{"restaurantId": 3}'`
->
->  #### create Votes for Restaurant not found
-> `curl -s -X POST http://localhost:8080/api/profile/votes --user user2@mail.ru:password2 -H 'Content-Type: application/json' -d '{"restaurantId": 100}'`
->
-> #### get Restaurants with Votes today
-> `curl -s http://localhost:8080/api/restaurants/with-votes/today --user user2@mail.ru:password2`
+> For testing, you may authorize with `admin@gmail.com admin` or `user2@mail.ru password2`

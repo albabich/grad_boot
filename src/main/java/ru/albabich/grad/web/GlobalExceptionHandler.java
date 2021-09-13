@@ -36,7 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Map<String, String> CONSTRAINS_MAP = Map.of(
             "restaurant_unique_name_idx", EXCEPTION_DUPLICATE_RESTAURANT,
-            "menu_item_unique_restaurant_id_date_name_idx", EXCEPTION_DUPLICATE_MENU_ITEM);
+            "menu_item_unique_restaurant_id_available_name_idx", EXCEPTION_DUPLICATE_MENU_ITEM);
 
     @NonNull
     @Override
