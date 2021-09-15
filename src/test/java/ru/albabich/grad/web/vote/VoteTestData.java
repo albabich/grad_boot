@@ -14,6 +14,7 @@ public class VoteTestData {
     public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "user", "restaurant");
 
     public static final int VOTE1_ID = 1;
+    public static final int VOTE3_ID = 3;
 
     public static final Vote vote1 = new Vote(VOTE1_ID, now(), rest1);
     public static final Vote vote2 = new Vote(VOTE1_ID + 1, of(2021, Month.APRIL, 5), rest2);

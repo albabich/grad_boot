@@ -31,12 +31,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String EXCEPTION_DUPLICATE_EMAIL = "User with this email already exists";
     public static final String EXCEPTION_DUPLICATE_MENU_ITEM = "[name] MenuItem with this name for this restaurant for today already exists";
     public static final String EXCEPTION_DUPLICATE_RESTAURANT = "[name] Restaurant with this name already exists";
+    public static final String EXCEPTION_DUPLICATE_VOTE = "You already voted today. But you can revote!";
 
     private final ErrorAttributes errorAttributes;
 
     private static final Map<String, String> CONSTRAINS_MAP = Map.of(
             "restaurant_unique_name_idx", EXCEPTION_DUPLICATE_RESTAURANT,
-            "menu_item_unique_restaurant_id_available_name_idx", EXCEPTION_DUPLICATE_MENU_ITEM);
+            "menu_item_unique_restaurant_id_available_name_idx", EXCEPTION_DUPLICATE_MENU_ITEM,
+            "vote_unique_vote_date_user_id_idx", EXCEPTION_DUPLICATE_VOTE);
 
     @NonNull
     @Override

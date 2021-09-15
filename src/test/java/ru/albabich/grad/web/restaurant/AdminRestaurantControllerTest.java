@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.albabich.grad.web.restaurant.RestaurantTestData.*;
 import static ru.albabich.grad.web.user.UserTestData.ADMIN_MAIL;
 
 
@@ -30,17 +31,17 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RestaurantTestData.REST2_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + REST2_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RestaurantTestData.REST_MATCHER.contentJson(RestaurantTestData.rest2));
+                .andExpect(REST_MATCHER.contentJson(rest2));
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RestaurantTestData.NOT_FOUND))
+        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -52,22 +53,22 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RestaurantTestData.REST_MATCHER.contentJson(RestaurantTestData.restaurants));
+                .andExpect(REST_MATCHER.contentJson(restaurants));
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + RestaurantTestData.REST3_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + REST3_ID))
                 .andExpect(status().isNoContent())
                 .andDo(print());
-        assertFalse(restaurantRepository.findById(RestaurantTestData.REST3_ID).isPresent());
+        assertFalse(restaurantRepository.findById(REST3_ID).isPresent());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + RestaurantTestData.NOT_FOUND))
+        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -75,29 +76,29 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Restaurant newRestaurant = RestaurantTestData.getNew();
+        Restaurant newRestaurant = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newRestaurant)))
                 .andDo(print());
 
-        Restaurant created = RestaurantTestData.REST_MATCHER.readFromJson(action);
+        Restaurant created = REST_MATCHER.readFromJson(action);
         int newId = created.id();
         newRestaurant.setId(newId);
-        RestaurantTestData.REST_MATCHER.assertMatch(created, newRestaurant);
-        RestaurantTestData.REST_MATCHER.assertMatch(restaurantRepository.getById(newId), newRestaurant);
+        REST_MATCHER.assertMatch(created, newRestaurant);
+        REST_MATCHER.assertMatch(restaurantRepository.getById(newId), newRestaurant);
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        Restaurant updated = RestaurantTestData.getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + RestaurantTestData.REST3_ID).contentType(MediaType.APPLICATION_JSON)
+        Restaurant updated = getUpdated();
+        perform(MockMvcRequestBuilders.put(REST_URL + REST3_ID).contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent())
                 .andDo(print());
 
-        RestaurantTestData.REST_MATCHER.assertMatch(restaurantRepository.getById(RestaurantTestData.REST3_ID), updated);
+        REST_MATCHER.assertMatch(restaurantRepository.getById(REST3_ID), updated);
     }
 
     @Test
@@ -114,8 +115,8 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        Restaurant invalid = new Restaurant(RestaurantTestData.REST3_ID, "");
-        perform(MockMvcRequestBuilders.put(REST_URL + RestaurantTestData.REST3_ID).contentType(MediaType.APPLICATION_JSON)
+        Restaurant invalid = new Restaurant(REST3_ID, "");
+        perform(MockMvcRequestBuilders.put(REST_URL + REST3_ID).contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(print());
@@ -138,8 +139,8 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        Restaurant duplicate = new Restaurant(RestaurantTestData.REST3_ID, "Munhell");
-        perform(MockMvcRequestBuilders.put(REST_URL + RestaurantTestData.REST3_ID).contentType(MediaType.APPLICATION_JSON)
+        Restaurant duplicate = new Restaurant(REST3_ID, "Munhell");
+        perform(MockMvcRequestBuilders.put(REST_URL + REST3_ID).contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(duplicate)))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(GlobalExceptionHandler.EXCEPTION_DUPLICATE_RESTAURANT)))

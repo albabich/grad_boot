@@ -15,6 +15,7 @@ public class UserTestData {
 
     public static final int NOT_FOUND = 100;
     public static final String USER2_MAIL = "user2@mail.ru";
+    public static final String USER3_MAIL = "user3@mail.ru";
     public static final String ADMIN_MAIL = "admin@gmail.com";
 
     public static final User admin = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ADMIN, Role.USER);

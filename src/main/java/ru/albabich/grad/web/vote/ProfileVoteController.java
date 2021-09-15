@@ -52,11 +52,6 @@ public class ProfileVoteController {
 
         vote.setUser(userRepository.getById(userId));
 
-        Vote todayVote = voteRepository.getByDateAndUser(LocalDate.now(), userId).orElse(null);
-        if (todayVote != null) {
-            throw new VoteException("You already voted today. But you can revote!");
-        }
-
         Vote created = voteRepository.save(vote);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
