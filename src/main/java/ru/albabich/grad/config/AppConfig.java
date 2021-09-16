@@ -10,12 +10,14 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import ru.albabich.grad.util.JsonUtil;
 
 import java.sql.SQLException;
 
 @Configuration
 @Slf4j
+@EnableScheduling
 @EnableCaching
 public class AppConfig {
 
@@ -37,4 +39,5 @@ public class AppConfig {
     public void storeObjectMapper(ObjectMapper objectMapper) {
         JsonUtil.setMapper(objectMapper);
     }
+
 }

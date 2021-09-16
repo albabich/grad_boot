@@ -40,11 +40,11 @@ public class ValidationUtil {
         }
     }
 
-    // Using for tests   https://stackoverflow.com/a/29360514
+    // Used for tests   https://stackoverflow.com/a/29360514
     public class TimeMachine {
 
         private static Clock clock = Clock.systemDefaultZone();
-        private static ZoneId zoneId = ZoneId.systemDefault();
+        private static final ZoneId zoneId = ZoneId.systemDefault();
 
         public static LocalTime now() {
             return LocalTime.now(getClock());

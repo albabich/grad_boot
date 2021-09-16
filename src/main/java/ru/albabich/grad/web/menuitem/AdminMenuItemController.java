@@ -56,7 +56,7 @@ public class AdminMenuItemController {
         return MenuItemUtil.getTos(menuItemRepository.getAllForRestaurantByDate(restaurantId, now()));
     }
 
-    @CacheEvict(allEntries = true)
+    @CacheEvict(allEntries = true, condition ="#menuItemTo.available.isEqual(T (java.time.LocalDate).now())")
     @Transactional
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuItemTo> createWithLocation(@Valid @RequestBody MenuItemTo menuItemTo, @PathVariable int restaurantId) {
@@ -71,7 +71,7 @@ public class AdminMenuItemController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @CacheEvict(allEntries = true)
+    @CacheEvict(allEntries = true, condition ="#menuItemTo.available.isEqual(T (java.time.LocalDate).now())")
     @Transactional
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)

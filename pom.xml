@@ -14,7 +14,6 @@
 
     <name>Restaurant Voting Application</name>
     <description>TopJava graduation project application</description>
-    <url>https://javaops.ru/view/topjava2</url>
 
     <properties>
         <java.version>16</java.version>

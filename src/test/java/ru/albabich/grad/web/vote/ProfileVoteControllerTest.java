@@ -78,8 +78,8 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER3_MAIL)
     void updateAfterCloseRevoting() throws Exception {
-        LocalDateTime beforeCloseVoting = of(vote3.getVoteDate(), LocalTime.of(11, 1));
-        ValidationUtil.TimeMachine.useFixedClockAt(beforeCloseVoting);
+        LocalDateTime afterCloseVoting = of(vote3.getVoteDate(), LocalTime.of(11, 1));
+        ValidationUtil.TimeMachine.useFixedClockAt(afterCloseVoting);
         perform(MockMvcRequestBuilders.put(REST_URL + VOTE3_ID)
                 .param("restaurantId", String.valueOf(REST3_ID)))
                 .andDo(print())
