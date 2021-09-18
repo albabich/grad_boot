@@ -2,7 +2,6 @@ package ru.albabich.grad.to;
 
 import lombok.*;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
@@ -15,19 +14,18 @@ public class MenuItemTo extends NamedTo {
 
     @NotNull
     @Positive
-    @Digits(integer = 7, fraction = 2)
-    private double price;
+    private int price;
 
     @NotNull
     private LocalDate available;
 
-    public MenuItemTo(LocalDate available, String name, double price) {
+    public MenuItemTo(LocalDate available, String name, int price) {
         super(null, name);
         this.price = price;
         this.available = available;
     }
 
-    public MenuItemTo(Integer id, LocalDate available, String name, double price) {
+    public MenuItemTo(Integer id, LocalDate available, String name, int price) {
         super(id, name);
         this.price = price;
         this.available = available;

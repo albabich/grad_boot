@@ -11,22 +11,22 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class MenuItemUtil {
     public static MenuItem createNewFromTo(MenuItemTo menuItemTo) {
-        return new MenuItem(null, menuItemTo.getAvailable(), menuItemTo.getName(), (int) (menuItemTo.getPrice() * 100));
+        return new MenuItem(null, menuItemTo.getAvailable(), menuItemTo.getName(), menuItemTo.getPrice());
     }
 
     public static MenuItem createFromTo(MenuItemTo menuItemTo) {
-        return new MenuItem(menuItemTo.getId(), menuItemTo.getAvailable(), menuItemTo.getName(), (int) (menuItemTo.getPrice() * 100));
+        return new MenuItem(menuItemTo.getId(), menuItemTo.getAvailable(), menuItemTo.getName(), menuItemTo.getPrice());
     }
 
     public static MenuItem updateFromTo(MenuItem menuItem, MenuItemTo menuItemTo) {
         menuItem.setName(menuItemTo.getName());
         menuItem.setAvailable(menuItemTo.getAvailable());
-        menuItem.setPrice((int) (menuItemTo.getPrice() * 100));
+        menuItem.setPrice(menuItemTo.getPrice());
         return menuItem;
     }
 
     public static MenuItemTo createTo(MenuItem menuItem) {
-        return new MenuItemTo(menuItem.getId(), menuItem.getAvailable(), menuItem.getName(), (menuItem.getPrice() / 100.));
+        return new MenuItemTo(menuItem.getId(), menuItem.getAvailable(), menuItem.getName(), (menuItem.getPrice()));
     }
 
     public static List<MenuItemTo> getTos(Collection<MenuItem> menuItems) {

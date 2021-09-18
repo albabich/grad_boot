@@ -28,7 +28,8 @@ Restaurant Voting Application REST API
 #### Details
 - Spring Boot 2.5, Lombok, H2, Swagger/OpenAPI 3.0, Caffeine Cache
 - Java Enterprise project with registration/authorization and role-based access rights (USER, ADMIN).
--  For easy testing in application created some restaurants with menus and some users and admin.
+- For easy testing in application created some restaurants with menus and some users and admin.
+- Application operates prices denominated in kopeck, cent etc.
 >  Credentials: `admin@gmail.com admin`, `user2@mail.ru password2`, `user3@mail.ru password3`, `user4@mail.ru password4`
 
 
