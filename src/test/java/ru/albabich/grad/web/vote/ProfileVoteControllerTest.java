@@ -80,7 +80,7 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
     void updateAfterCloseRevoting() throws Exception {
         LocalDateTime afterCloseVoting = of(vote3.getVoteDate(), LocalTime.of(11, 1));
         ValidationUtil.TimeMachine.useFixedClockAt(afterCloseVoting);
-        perform(MockMvcRequestBuilders.put(REST_URL + VOTE3_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL)
                 .param("restaurantId", String.valueOf(REST3_ID)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
@@ -94,7 +94,7 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
         updated.setRestaurant(rest3);
         LocalDateTime beforeCloseVoting = of(vote3.getVoteDate(), LocalTime.of(10, 59));
         ValidationUtil.TimeMachine.useFixedClockAt(beforeCloseVoting);
-        perform(MockMvcRequestBuilders.put(REST_URL + VOTE3_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL)
                 .param("restaurantId", String.valueOf(REST3_ID)))
                 .andDo(print())
                 .andExpect(status().isNoContent());

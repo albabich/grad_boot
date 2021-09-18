@@ -1,6 +1,6 @@
 package ru.albabich.grad.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -18,15 +18,10 @@ public class Restaurant extends NamedEntity {
 
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @JsonManagedReference(value = "menu")
     @OrderBy("id")
+    @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<MenuItem> menuItems;
-
-    @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Vote> votes;
 
     public Restaurant(Integer id, String name) {
         super(id, name);

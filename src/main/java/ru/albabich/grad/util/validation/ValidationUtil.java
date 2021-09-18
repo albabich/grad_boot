@@ -33,7 +33,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkChangeVoteAbility() {
+    public static void checkRevoteAbility() {
         LocalTime now = TimeMachine.now();
         if (now.isAfter(CLOSE_REVOTING)) {
             throw new VoteException(String.format("You can't change vote after %s", CLOSE_REVOTING));

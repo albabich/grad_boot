@@ -1,5 +1,7 @@
 package ru.albabich.grad.web.vote;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,7 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.albabich.grad.error.VoteException;
+import ru.albabich.grad.error.NotFoundException;
 import ru.albabich.grad.model.Vote;
 import ru.albabich.grad.repository.RestaurantRepository;
 import ru.albabich.grad.repository.UserRepository;
@@ -19,6 +21,7 @@ import ru.albabich.grad.web.AuthUser;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -38,11 +41,17 @@ public class ProfileVoteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Vote> get(@PathVariable int id, @AuthenticationPrincipal AuthUser authUser) {
-        return ResponseEntity.of(voteRepository.getByIdAndUserAndDate(id, authUser.id(), LocalDate.now()));
+        return ResponseEntity.of(voteRepository.getByIdAndUser(id, authUser.id()));
+    }
+
+    @GetMapping()
+    public List<Vote> getAll(@AuthenticationPrincipal AuthUser authUser) {
+        return voteRepository.getAllForUser(authUser.id());
     }
 
     @Transactional
     @PostMapping()
+    @RequestBody(content = @Content)
     public ResponseEntity<Vote> createWithLocation(@RequestParam int restaurantId, @AuthenticationPrincipal AuthUser authUser) {
 
         int userId = authUser.id();
@@ -60,18 +69,17 @@ public class ProfileVoteController {
     }
 
     @Transactional
-    @PutMapping(value = "/{id}")
+    @PutMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int id, @RequestParam int restaurantId, @AuthenticationPrincipal AuthUser authUser) {
+    public void update(@RequestParam int restaurantId, @AuthenticationPrincipal AuthUser authUser) {
 
         int userId = authUser.id();
+        Vote todayVote = voteRepository.getByDateAndUser(LocalDate.now(), authUser.id()).orElseThrow(()-> new NotFoundException("You have not vote today"));
+        log.info("update today vote {} for user {} for restaurant {}", todayVote.id(), userId, restaurantId);
 
-        log.info("update vote {} for user {} for restaurant {}", id, userId, restaurantId);
+        ValidationUtil.checkRevoteAbility();
 
-        Vote vote = voteRepository.checkBelongAndDate(id, userId, LocalDate.now());
-        ValidationUtil.checkChangeVoteAbility();
-
-        vote.setRestaurant(restaurantRepository.getById(restaurantId));
-        voteRepository.save(vote);
+        todayVote.setRestaurant(restaurantRepository.getById(restaurantId));
+        voteRepository.save(todayVote);
     }
 }

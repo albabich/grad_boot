@@ -26,9 +26,6 @@ public class RestaurantTestData {
         rest1.setMenuItems(menuItemsRest1Today);
         rest2.setMenuItems(menuItemsRest2Today);
         rest3.setMenuItems(menuItemsRest3Today);
-        rest1.setVotes(voteRest1Today);
-        rest2.setVotes(voteRest2Today);
-        rest3.setVotes(voteRest3Today);
     }
 
     public static final List<Restaurant> restaurants = List.of(rest1, rest3, rest2);

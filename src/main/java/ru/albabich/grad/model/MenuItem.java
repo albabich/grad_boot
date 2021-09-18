@@ -1,6 +1,5 @@
 package ru.albabich.grad.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
@@ -19,7 +18,6 @@ public class MenuItem extends NamedEntity {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @JsonBackReference(value = "menu")
     private Restaurant restaurant;
 
     @Column(name = "available", nullable = false, columnDefinition = "date default now()")
@@ -32,11 +30,6 @@ public class MenuItem extends NamedEntity {
 
     public MenuItem(MenuItem menuItem) {
         this(menuItem.id, menuItem.available, menuItem.name, menuItem.price);
-    }
-
-    public MenuItem(Integer id, String name, int price) {
-        super(id, name);
-        this.price = price;
     }
 
     public MenuItem(Integer id, LocalDate available, String name, int price) {
